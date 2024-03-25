@@ -35,7 +35,7 @@ if table
     end
   end
 
-  puts 'Данные успешно извлечены и записаны в hospitals_data.csv'
+  puts 'Дані успішно витягнуті та записані в hospitals_data.csv'
 else
-  puts 'Таблица не найдена на странице.'
+  puts 'Таблицю не знайдено на сторінці.'
 end
