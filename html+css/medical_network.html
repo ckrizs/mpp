@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лікарська Мережа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="date"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Лікарська Мережа</h1>
+
+    <!-- Форма для Медичного Центру -->
+    <form id="medicalCenterForm">
+        <h2>Медичний Центр</h2>
+        <div class="form-group">
+            <label for="centerID">Центр_ID:</label>
+            <input type="text" id="centerID" name="centerID" required>
+        </div>
+        <div class="form-group">
+            <label for="centerName">Назва:</label>
+            <input type="text" id="centerName" name="centerName" required>
+        </div>
+        <div class="form-group">
+            <label for="centerAddress">Адреса:</label>
+            <input type="text" id="centerAddress" name="centerAddress" required>
+        </div>
+        <div class="form-group">
+            <label for="centerPhone">Телефон:</label>
+            <input type="tel" id="centerPhone" name="centerPhone" required>
+        </div>
+        <div class="form-group">
+            <label for="centerDirector">Директор:</label>
+            <input type="text" id="centerDirector" name="centerDirector" required>
+        </div>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <!-- Форма для Відділення -->
+    <form id="departmentForm">
+        <h2>Відділення</h2>
+        <div class="form-group">
+            <label for="departmentID">Відділення_ID:</label>
+            <input type="text" id="departmentID" name="departmentID" required>
+        </div>
+        <div class="form-group">
+            <label for="departmentName">Назва:</label>
+            <input type="text" id="departmentName" name="departmentName" required>
+        </div>
+        <div class="form-group">
+            <label for="beds">Кількість ліжок:</label>
+            <input type="number" id="beds" name="beds" required>
+        </div>
+        <div class="form-group">
+            <label for="hospitalID">Лікарня_ID:</label>
+            <input type="text" id="hospitalID" name="hospitalID" required>
+        </div>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <!-- Форма для Лікаря -->
+    <form id="doctorForm">
+        <h2>Лікар</h2>
+        <div class="form-group">
+            <label for="doctorID">Лікар_ID:</label>
+            <input type="text" id="doctorID" name="doctorID
+            <input type="text" id="doctorID" name="doctorID" required>
+        </div>
+        <div class="form-group">
+            <label for="doctorLastName">Прізвище:</label>
+            <input type="text" id="doctorLastName" name="doctorLastName" required>
+        </div>
+        <div class="form-group">
+            <label for="doctorFirstName">Ім'я:</label>
+            <input type="text" id="doctorFirstName" name="doctorFirstName" required>
+        </div>
+        <div class="form-group">
+            <label for="specialization">Спеціалізація:</label>
+            <input type="text" id="specialization" name="specialization" required>
+        </div>
+        <div class="form-group">
+            <label for="office">Кабінет:</label>
+            <input type="text" id="office" name="office" required>
+        </div>
+        <div class="form-group">
+            <label for="salary">Зарплата:</label>
+            <input type="number" id="salary" name="salary" required>
+        </div>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <!-- Форма для Пацієнта -->
+    <form id="patientForm">
+        <h2>Пацієнт</h2>
+        <div class="form-group">
+            <label for="patientID">Пацієнт_ID:</label>
+            <input type="text" id="patientID" name="patientID" required>
+        </div>
+        <div class="form-group">
+            <label for="patientLastName">Прізвище:</label>
+            <input type="text" id="patientLastName" name="patientLastName" required>
+        </div>
+        <div class="form-group">
+            <label for="patientFirstName">Ім'я:</label>
+            <input type="text" id="patientFirstName" name="patientFirstName" required>
+        </div>
+        <div class="form-group">
+            <label for="birthdate">Дата народження:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+        <div class="form-group">
+            <label for="patientAddress">Адреса:</label>
+            <input type="text" id="patientAddress" name="patientAddress" required>
+        </div>
+        <div class="form-group">
+            <label for="medicalCardNumber">Номер медичної картки:</label>
+            <input type="text" id="medicalCardNumber" name="medicalCardNumber" required>
+        </div>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <!-- Розділ Зв'язки -->
+    <h2>Зв'язки</h2>
+    <p>Медичний Центр має багато Відділень (один-до-багатьох)</p>
+    <p>Лікар працює в багатьох Лікарнях (багато-до-багатьох)</p>
+    <p>Лікар працює в конкретному Відділенні (один-до-багатьох)</p>
+    <p>Пацієнт може мати багатьох Лікарів (багато-до-багатьох)</p>
+
+    <!-- Розділ Пояснення -->
+    <h2>Пояснення</h2>
+    <p>Кожен Медичний Центр співпрацює з різними Лікарями та має кілька Відділень.</p>
+    <p>Лікарі можуть працювати в різних Лікарнях та в різних Відділеннях.</p>
+    <p>Лікарі також прив'язані до конкретного Відділення та можуть мати різні зарплати.</p>
+    <p>Пацієнти можуть отримувати послуги від багатьох Лікарів та мати медичні карти для ведення інформації про їх стан здоров'я.</p>
+
+</body>
+</html>
