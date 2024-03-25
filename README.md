@@ -16,7 +16,7 @@
 
 ### ER Діаграма
 
-(https://github.com/ckrizs/mpp/blob/main/docs/ER-diagram.md)
+https://github.com/ckrizs/mpp/blob/main/docs/ER-diagram.md
 
 ## Скріпти
 
