@@ -16,7 +16,7 @@
 
 ### ER Діаграма
 
-![ER Діаграма](посилання_на_зображення_ER_діаграми)
+![ER Діаграма] (https://github.com/ckrizs/mpp/blob/main/docs/ER-diagram.md)
 
 ## Скріпти
 
