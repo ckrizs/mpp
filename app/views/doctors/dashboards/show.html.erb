@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Личный кабинет доктора</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f5f5f5;
+          margin: 0;
+          padding: 0;
+      }
+      .container {
+          max-width: 800px;
+          margin: 50px auto;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+          text-align: center;
+      }
+      .header {
+          background-color: #007bff;
+          padding: 10px 0;
+          text-align: center;
+          color: #fff;
+      }
+      .header a {
+          color: #fff;
+          text-decoration: none;
+          margin: 0 10px;
+      }
+      .header a:hover {
+          text-decoration: underline;
+      }
+  </style>
+</head>
+<body>
+<div class="header">
+  <%= link_to "Повернутися на головну", root_path %>
+</div>
+<div class="container">
+  <h2>Личный кабинет доктора</h2>
+  <p><strong>Имя:</strong> <%= current_doctor.name %></p>
+  <p><strong>Email:</strong> <%= current_doctor.email %></p>
+  <%= link_to "Редактировать профиль", edit_doctors_profile_path, class: "btn btn-primary" %>
+  <h2>Список пациентов:</h2>
+  <ul>
+    <% @patients.each do |patient| %>
+      <li>
+        <%= link_to patient.name, patients_dashboard_path(id: patient.id) %>
+      </li>
+    <% end %>
+  </ul>
+  <div id="appointment-attendance">
+    <h2>Отметить присутствие пациентов</h2>
+    <ul>
+      <% if @appointments.present? %>
+        <% @appointments.each do |appointment| %>
+          <li>
+            <%= appointment.start.strftime("%d-%m-%Y %H:%M") %> - <%= appointment.patient.name %> - <%= appointment.appointment_type %> <%= "(не посещено)" unless appointment.attended %>
+            <%= form_with(model: [:doctors, appointment], local: true, method: :patch) do |form| %>
+              <%= form.hidden_field :attended, value: true %>
+              <%= form.submit "Отметить посещение" %>
+            <% end %>
+          </li>
+        <% end %>
+      <% else %>
+        <li>Нет назначенных приёмов</li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

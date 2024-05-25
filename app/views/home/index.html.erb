@@ -1,0 +1,53 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .header {
+        background-color: #007bff;
+        padding: 10px 0;
+        text-align: center;
+        color: #fff;
+    }
+    .header a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    .header a:hover {
+        text-decoration: underline;
+    }
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        text-align: center;
+    }
+    h1 {
+        margin-bottom: 20px;
+    }
+</style>
+<div class="header">
+  <% if doctor_signed_in? %>
+    <%= link_to "Личный кабинет", doctors_dashboard_path(id: current_doctor.id) %>
+    <%= link_to "Вихід з акаунту", destroy_doctor_session_path, method: :delete %>
+  <% elsif patient_signed_in? %>
+    <%= link_to "Личный кабинет", patients_dashboard_path(id: current_patient.id) %>
+    <%= link_to "Вихід з акаунту", destroy_patient_session_path, method: :delete %>
+  <% else %>
+    <%= link_to "Реєстрація для докторів", new_doctor_registration_path %>
+    <%= link_to "Реєстрація для пацієнтів", new_patient_registration_path %>
+    <%= link_to "Вхід для докторів", new_doctor_session_path %>
+    <%= link_to "Вхід для пацієнтів", new_patient_session_path %>
+  <% end %>
+</div>
+<div class="container">
+  <h1>Welcome to HealthHub</h1>
+  <h1>Список лікарень</h1>
+
+  <ul>
+    <% @hospitals.each do |hospital| %>
+      <li><%= hospital.name %> - <%= hospital.country %>, <%= hospital.city %>, <%= hospital.state %></li>
+    <% end %>
+  </ul>
+</div>

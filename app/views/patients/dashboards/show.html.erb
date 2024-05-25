@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Личный кабинет пациента</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f5f5f5;
+          margin: 0;
+          padding: 0;
+      }
+      .container {
+          max-width: 800px;
+          margin: 50px auto;
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+          text-align: center;
+      }
+      .header {
+          background-color: #007bff;
+          padding: 10px 0;
+          text-align: center;
+          color: #fff;
+      }
+      .header a {
+          color: #fff;
+          text-decoration: none;
+          margin: 0 10px;
+      }
+      .header a:hover {
+          text-decoration: underline;
+      }
+      #calendar {
+          max-width: 900px;
+          margin: 0 auto;
+      }
+      .fc-daygrid-event {
+          white-space: normal;
+          word-wrap: break-word;
+      }
+      .fc-daygrid-event-dot {
+          display: none;
+      }
+      .compact-form {
+          max-width: 500px;
+          margin: 20px auto;
+          padding: 20px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          background-color: #f9f9f9;
+      }
+      .compact-form h2 {
+          margin-bottom: 20px;
+          text-align: center;
+      }
+      .form-group {
+          margin-bottom: 15px;
+      }
+      .form-group label {
+          display: block;
+          margin-bottom: 5px;
+      }
+      .form-group .form-control {
+          width: 100%;
+          padding: 8px;
+          box-sizing: border-box;
+      }
+      .btn-primary {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          background-color: #007bff;
+          border: none;
+          color: white;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      .btn-primary:hover {
+          background-color: #0056b3;
+      }
+  </style>
+</head>
+<body>
+<div class="header">
+  <%= link_to "Повернутися на головну", root_path %>
+</div>
+<div class="container">
+  <h2>Анкета пациента:</h2>
+  <p><strong>Имя:</strong> <%= @patient.name %></p>
+  <p><strong>Email:</strong> <%= @patient.email %></p>
+  <%= link_to "Редактировать профиль", edit_patients_profile_path(id: @patient.id), class: "btn" %>
+  <div>
+    <strong>Карточка больного:</strong>
+    <% if @patient.patient_card %>
+      <p><%= @patient.patient_card.content %></p>
+      <%= link_to "Редактировать карточку", edit_patients_patient_card_path(patient_id: @patient.id, id: @patient.patient_card.id), class: "btn" %>
+    <% else %>
+      <p>Карточка больного отсутствует</p>
+      <%= link_to "Добавить карточку", new_patients_patient_card_path(patient_id: @patient.id), class: "btn" %>
+    <% end %>
+  </div>
+  <% if patient_signed_in? %>
+    <div id="appointment-form" class="compact-form">
+      <h2>Добавить прием</h2>
+      <%= form_with(model: [@patient, @appointment], local: true) do |form| %>
+        <div class="form-group">
+          <%= form.label :doctor_id, 'Доктор' %>
+          <%= form.collection_select :doctor_id, @doctors, :id, :name, prompt: 'Выберите доктора', class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :start, 'Время начала' %>
+          <%= form.datetime_select :start, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :appointment_type, 'Тип приема' %>
+          <%= form.select :appointment_type, ['консультация', 'операция'], prompt: 'Выберите тип приема', class: "form-control" %>
+        </div>
+        <%= form.hidden_field :attended, value: false %>
+        <div class="form-group">
+          <%= form.submit 'Добавить', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <% events_json = @appointments.to_json(only: [:start, :title, :appointment_type, :doctor_id, :attended]) %>
+  <div id="calendar" data-events="<%= @appointments_data.to_json.html_safe %>"></div>
+  <%= javascript_tag do %>
+    console.log("Events JSON:", "<%= events_json %>");
+  <% end %>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var events = <%= raw @appointments.to_json %>;
+
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              events: events,
+              eventContent: function(arg) {
+                  var attended = arg.event.extendedProps.attended;
+                  var title = arg.event.title;
+                  var startTime = new Date(arg.event.start).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+                  if (!attended) {
+                      title += " (не посещено)";
+                  } else {
+                      title += " (посещено)";
+                  }
+
+                  var customEvent = document.createElement('div');
+                  customEvent.innerHTML = startTime + " - " + title;
+                  return { domNodes: [customEvent] };
+              }
+          });
+
+          calendar.render();
+      });
+  </script>
+
+</div>
+</body>
+</html>
