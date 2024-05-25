@@ -45,11 +45,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_152434) do
   create_table "hospitals", force: :cascade do |t|
     t.integer "rank"
     t.string "name"
-    t.string "country"
-    t.string "city"
-    t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "size"
+    t.integer "visibility"
+    t.integer "rich_files"
+    t.integer "scholar"
   end
 
   create_table "links", force: :cascade do |t|

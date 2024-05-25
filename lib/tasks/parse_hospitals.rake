@@ -5,7 +5,10 @@ namespace :parse do
     require 'nokogiri'
 
     # URL, який будемо парсити
-    url = "https://www.newsweek.com/rankings/worlds-best-hospitals-2023"
+    url = "https://hospitals.webometrics.info/en/world"
+
+    class Hospital < ApplicationRecord
+    end
 
     begin
       # Отримання HTML-сторінки з включенням агента користувача в заголовки запиту
@@ -14,20 +17,28 @@ namespace :parse do
       # Парсинг HTML за допомогою Nokogiri
       doc = Nokogiri::HTML(html)
 
-      # Отримання даних про лікарні та їх збереження у базі даних
-      doc.css('.rankings-list-item').each do |hospital_node|
-        name = hospital_node.css('.rankings-list-hospital-name').text.strip
-        country = hospital_node.css('.rankings-list-country').text.strip
-        city = hospital_node.css('.rankings-list-city').text.strip
-        rank = hospital_node.css('.rankings-list-hospital-rank').text.strip.to_i
+      doc.css('table tr').each do |hospital_row|
+        columns = hospital_row.css('td')
+        next if columns.empty? # Пропустити рядок заголовків
+
+        rank = columns[0].text.strip.to_i
+        name = columns[1].text.strip
+        size = columns[3].text.strip.to_i
+        visibility = columns[4].text.strip.to_i
+        rich_files = columns[5].text.strip.to_i
+        scholar = columns[6].text.strip.to_i
+
+        # Виведення інформації про лікарню для дебагу
+        puts "Rank: #{rank}, Name: #{name}, Size: #{size}, Visibility: #{visibility}, Rich Files: #{rich_files}, Scholar: #{scholar}"
 
         # Зберігання даних у базі даних
-        Hospital.create(name: name, country: country, city: city, rank: rank)
-      end
+        hospital = Hospital.new(rank: rank, name: name, size: size, visibility: visibility, rich_files: rich_files, scholar: scholar)
+        hospital.save
 
-      puts "Hospital data parsed and saved successfully."
-    rescue => e
-      puts "Error: #{e.message}"
+        puts "Hospital data parsed and saved successfully."
+      rescue => e
+        puts "Error: #{e.message}"
+      end
     end
   end
 end

@@ -26,28 +26,89 @@
     h1 {
         margin-bottom: 20px;
     }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
 </style>
+
 <div class="header">
   <% if doctor_signed_in? %>
-    <%= link_to "Личный кабинет", doctors_dashboard_path(id: current_doctor.id) %>
-    <%= link_to "Вихід з акаунту", destroy_doctor_session_path, method: :delete %>
+    <%= link_to "Особистий кабінет", doctors_dashboard_path(id: current_doctor.id) %>
+    <%= link_to "Вихід з облікового запису", destroy_doctor_session_path, method: :delete %>
   <% elsif patient_signed_in? %>
-    <%= link_to "Личный кабинет", patients_dashboard_path(id: current_patient.id) %>
-    <%= link_to "Вихід з акаунту", destroy_patient_session_path, method: :delete %>
+    <%= link_to "Особистий кабінет", patients_dashboard_path(id: current_patient.id) %>
+    <%= link_to "Вихід з облікового запису", destroy_patient_session_path, method: :delete %>
   <% else %>
-    <%= link_to "Реєстрація для докторів", new_doctor_registration_path %>
+    <%= link_to "Реєстрація для лікарів", new_doctor_registration_path %>
     <%= link_to "Реєстрація для пацієнтів", new_patient_registration_path %>
-    <%= link_to "Вхід для докторів", new_doctor_session_path %>
+    <%= link_to "Вхід для лікарів", new_doctor_session_path %>
     <%= link_to "Вхід для пацієнтів", new_patient_session_path %>
   <% end %>
 </div>
-<div class="container">
-  <h1>Welcome to HealthHub</h1>
-  <h1>Список лікарень</h1>
 
-  <ul>
+<div class="container">
+  <h1>Ласкаво просимо до HealthHub</h1>
+  <h2>Список лікарень</h2>
+
+  <% if params[:search].present? %>
+    <p>Результати пошуку для "<%= params[:search] %>":</p>
+  <% end %>
+
+  <%= form_with url: root_path, method: :get, local: true do %>
+    <div class="form-group">
+      <%= label_tag :search, "Пошук по лікарням:" %>
+      <%= text_field_tag :search, params[:search], class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= submit_tag "Пошук", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Ранг</th>
+      <th>Назва</th>
+      <th>Розмір</th>
+      <th>Видимість</th>
+      <th>Розширені файли</th>
+      <th>Учені</th>
+    </tr>
+    </thead>
+    <tbody>
     <% @hospitals.each do |hospital| %>
-      <li><%= hospital.name %> - <%= hospital.country %>, <%= hospital.city %>, <%= hospital.state %></li>
+      <tr>
+        <td><%= hospital.rank %></td>
+        <td><%= hospital.name %></td>
+        <td><%= hospital.size %></td>
+        <td><%= hospital.visibility %></td>
+        <td><%= hospital.rich_files %></td>
+        <td><%= hospital.scholar %></td>
+      </tr>
     <% end %>
-  </ul>
+    </tbody>
+  </table>
 </div>
