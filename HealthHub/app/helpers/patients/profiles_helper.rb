@@ -1,2 +1,0 @@
-module Patients::ProfilesHelper
-end
