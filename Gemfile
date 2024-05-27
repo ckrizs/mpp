@@ -79,3 +79,7 @@ gem 'rspec'
 
 # Use webpacker for managing JavaScript in Rails
 gem 'webpacker'
+
+gem 'activeadmin'
+
+gem 'sassc-rails'

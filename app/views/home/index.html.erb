@@ -52,6 +52,15 @@
     .btn-primary:hover {
         background-color: #0056b3;
     }
+    .admin-link {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
+    .admin-link .btn {
+        background-color: #007bff;
+        color: #fff;
+    }
 </style>
 
 <div class="header">
@@ -111,4 +120,8 @@
     <% end %>
     </tbody>
   </table>
+</div>
+
+<div class="admin-link">
+  <%= link_to 'Admin Panel', admin_root_path, class: 'btn btn-primary' %>
 </div>
